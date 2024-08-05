@@ -2,8 +2,8 @@ from typing import Annotated
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session 
 from fastapi import APIRouter, Depends, HTTPException, Path, Request
-from models import Todos
-from database import SessionLocal
+from ..models import Todos
+from ..database import SessionLocal
 from starlette import status
 from .auth import get_current_user
 from fastapi.responses import HTMLResponse
@@ -42,9 +42,7 @@ class TodoRequest(BaseModel):
 
 
 
-@router.get("/test")
-async def test(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+
 
 
 

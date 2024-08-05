@@ -1,13 +1,14 @@
 from fastapi import FastAPI
-import models
-from database import engine
-from routers import auth, todos, admin, users
+from .models import Base
+from .database import engine
+from .routers import auth, todos, admin, users
+from starlette.staticfiles import StaticFiles
 
 
 app = FastAPI()
 
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 @app.get("7healthy")
 def health_check():
