@@ -1,11 +1,13 @@
 from typing import Annotated
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session 
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, HTTPException, Path, Request
 from models import Todos
 from database import SessionLocal
 from starlette import status
 from .auth import get_current_user
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
 
@@ -27,11 +29,22 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 user_dependency = Annotated[dict, Depends(get_current_user)]
 
+
+templates = Jinja2Templates(directory="templates")
+
+
+
 class TodoRequest(BaseModel):
     title: str = Field(min_length=3)
     description : str = Field(min_length=3, max_length=100)
     priority : int = Field(gt=0, lt=6)
     complete: bool
+
+
+
+@router.get("/test")
+async def test(request: Request):
+    return templates.TemplateResponse("home.html", {"request": request})
 
 
 

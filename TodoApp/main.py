@@ -9,6 +9,10 @@ app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
 
+@app.get("7healthy")
+def health_check():
+    return {'status': 'Healthy'}
+
 #Load router
 app.include_router(auth.router)
 app.include_router(todos.router)
