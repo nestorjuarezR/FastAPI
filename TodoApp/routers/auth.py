@@ -58,6 +58,8 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 templates = Jinja2Templates(directory='TodoApp/templates')
 
+
+
 #Pages
 
 
@@ -65,6 +67,15 @@ templates = Jinja2Templates(directory='TodoApp/templates')
 def render_login_page(request: Request):
     return templates.TemplateResponse('login.html', {'request': request})
 
+
+
+
+@router.get('/register-page')
+def render_register_page(request: Request):
+    return templates.TemplateResponse('register.html', {'request': request})
+
+
+#Endpoint
 
 def authenticated_user(username: str, password: str, db):
     user = db.query(Users).filter(Users.username == username).first()
