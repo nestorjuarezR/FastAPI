@@ -1,8 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from .models import Base
 from .database import engine
 from .routers import auth, todos, admin, users
-from starlette.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 
 app = FastAPI()
@@ -10,10 +10,17 @@ app = FastAPI()
 
 Base.metadata.create_all(bind=engine)
 
+
+templates = Jinja2Templates(directory='TodoApp/templates')
+
 @app.get("/healthy")
 def health_check():
     return {'status': 'Healthy'}
 
+
+@app.get("/")
+def test(request: Request):
+    return templates.TemplateResponse('home.html', {'request': request})
 
 
 #Load router
